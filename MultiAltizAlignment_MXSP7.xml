@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Example Name="MultiAltizAlignment" Revision="00.00.0000" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../.schema/example_restriction.xsd">
+    <Categories>
+        <Category Name="Overview">
+            <Category Name="Advanced"/>
+            <Category Name="Processing">
+            </Category>
+        </Category>
+        <Category Name="Industries">
+        <Category Name="Automation"/>
+	    <Category Name="Machining"/>
+        </Category>
+        <Category Name="Applications">
+            <Category Name="Inspecting/Proofing/Verifying"/>
+        </Category>
+        <Category Name="Modules">
+            <Category Name="3D Display"/>
+            <Category Name="3D Geometry"/>
+            <Category Name="3D Graphics"/>
+            <Category Name="3D Image Processing"/>
+            <Category Name="3D Metrology"/>
+            <Category Name="3D Model Finder"/>
+            <Category Name="Buffer"/>
+            <Category Name="Display"/>
+            <Category Name="Graphics"/>
+            <Category Name="Geometric Model Finder"/>
+        </Category>  
+        <Category Name="What's New">
+            <Category Name="MIL 10.0 SP7" New="1"/>
+        </Category>
+        
+    </Categories>
+
+    <Description>
+    This example demonstrates how to rigidly align data from multiple 3d cameras using
+    a calibration tool.
+    </Description>
+
+    <Languages>
+        <Language>C++</Language>
+    </Languages>
+
+    <Functions>
+      <Function>M3ddispAlloc</Function>
+      <Function>M3ddispControl</Function>
+      <Function>M3ddispFree</Function>
+      <Function>M3ddispInquire</Function>
+      <Function>M3ddispSelect</Function>
+      <Function>M3ddispSetView</Function>
+      <Function>M3dgeoAlloc</Function>
+      <Function>M3dgeoBox</Function>
+      <Function>M3dgeoFree</Function>
+      <Function>M3dgeoMatrixGetTransform</Function>
+      <Function>M3dgeoMatrixSetTransform</Function>
+      <Function>M3dgeoRestore</Function>
+      <Function>M3dgeoSave</Function>
+      <Function>M3dgraAdd</Function>
+      <Function>M3dgraControl</Function>
+      <Function>M3dgraRemove</Function>
+      <Function>M3dimAlloc</Function>
+      <Function>M3dimCalculateMapSize</Function>
+      <Function>M3dimCalibrateDepthMap</Function>
+      <Function>M3dimControl</Function>
+      <Function>M3dimCrop</Function>
+      <Function>M3dimFillGaps</Function>
+      <Function>M3dimFree</Function>
+      <Function>M3dimMatrixTransform</Function>
+      <Function>M3dimMerge</Function>
+      <Function>M3dimNormals</Function>
+      <Function>M3dimProject</Function>
+      <Function>M3dimRemovePoints</Function>
+      <Function>M3dimRotate</Function>
+      <Function>M3dimScale</Function>
+      <Function>M3dimTranslate</Function>
+      <Function>M3dmetAllocResult</Function>
+      <Function>M3dmetFit</Function>
+      <Function>M3dmetFree</Function>
+      <Function>M3dmetGetResult</Function>
+      <Function>M3dmodAlloc</Function>
+      <Function>M3dmodAllocResult</Function>
+      <Function>M3dmodControl</Function>
+      <Function>M3dmodCopyResult</Function>
+      <Function>M3dmodDefine</Function>
+      <Function>M3dmodDraw3d</Function>
+      <Function>M3dmodFind</Function>
+      <Function>M3dmodFree</Function>
+      <Function>M3dmodGetResult</Function>
+      <Function>M3dmodPreprocess</Function>
+      <Function>MappAlloc</Function>
+      <Function>MappControl</Function>
+      <Function>MappFileOperation</Function>
+      <Function>MappFree</Function>
+      <Function>MbufAlloc2d</Function>
+      <Function>MbufAllocColor</Function>
+      <Function>MbufAllocComponent</Function>
+      <Function>MbufAllocContainer</Function>
+      <Function>MbufChildColor</Function>
+      <Function>MbufClear</Function>
+      <Function>MbufConvert3d</Function>
+      <Function>MbufFree</Function>
+      <Function>MbufFreeComponent</Function>
+      <Function>MbufGetColor</Function>
+      <Function>MbufImport</Function>
+      <Function>MbufInquireContainer</Function>
+      <Function>MdispAlloc</Function>
+      <Function>MdispControl</Function>
+      <Function>MdispFree</Function>
+      <Function>MdispSelect</Function>
+      <Function>MdispZoom</Function>
+      <Function>MgenLutFunction</Function>
+      <Function>MgraAllocList</Function>
+      <Function>MgraControl</Function>
+      <Function>MgraFree</Function>
+      <Function>MmodAlloc</Function>
+      <Function>MmodAllocResult</Function>
+      <Function>MmodControl</Function>
+      <Function>MmodDefine</Function>
+      <Function>MmodDraw</Function>
+      <Function>MmodFind</Function>
+      <Function>MmodFree</Function>
+      <Function>MmodGetResult</Function>
+      <Function>MmodPreprocess</Function>
+      <Function>MsysAlloc</Function>
+      <Function>MsysFree</Function>
+   </Functions>
+
+   <Licenses>
+      <License>Image Analysis</License>
+      <License>GMF &amp; AGM</License>
+      <License>Metrology</License>
+      <License>3D Calibration &amp; Supplement</License>
+   </Licenses>
+   <Keywords>
+        <Keyword>3D reconstruction</Keyword>
+	    <Keyword>3D calibration</Keyword>
+	    <Keyword>Geometric transformation</Keyword>
+   </Keywords>
+
+</Example>
