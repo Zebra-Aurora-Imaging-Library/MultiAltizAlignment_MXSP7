@@ -119,7 +119,7 @@ struct SBGR32Color
 //****************************************************************************
 // Function declaration.
 //****************************************************************************
-MIL_INT FindTransformationMatrices(MIL_ID MilSystem);
+bool FindTransformationMatrices(MIL_ID MilSystem);
 MIL_INT MergeFromRestoredMatrices(MIL_ID MilSystem);
 SAlignmentData RestoreAndShowAlignmentData(MIL_ID MilSystem, MIL_CONST_TEXT_PTR PointCloudFiles[], bool AddNormalIfMissing = false);
 void MergeAndShowAligned(MIL_ID MilSystem, const std::vector<MIL_ID>& MilToAlignPointClouds);
@@ -144,7 +144,7 @@ int MosMain(void)
    auto MilSystem = MsysAlloc(MilApplication, M_SYSTEM_HOST, M_DEFAULT, M_DEFAULT, M_UNIQUE_ID);
 
    // Find transformation matrices using a tool.
-   FindTransformationMatrices(MilSystem);
+   if(!FindTransformationMatrices(MilSystem)) return EXIT_FAILURE;
 
    // Restore transformation matrices to align PC.
    MergeFromRestoredMatrices(MilSystem);
@@ -174,6 +174,11 @@ SAlignmentData RestoreAndShowAlignmentData(MIL_ID MilSystem, MIL_CONST_TEXT_PTR 
       const auto DispInfo = DST_DISPLAY_INFO[f];
       AlignmentData.MilDisplay3d[f] = Alloc3dDisplayId(MilSystem, DispInfo.PositionX, DispInfo.PositionY,
                                                        DispInfo.Size, DispInfo.Size, DispInfo.Title);
+      if(!AlignmentData.MilDisplay3d[f])
+         {
+         AlignmentData.IsValid = false;
+         return AlignmentData;
+         }
       AlignmentData.MilGraphicList3d[f] = M3ddispInquire(AlignmentData.MilDisplay3d[f], M_3D_GRAPHIC_LIST_ID, M_NULL);
 
       // Add the normals if required.
@@ -202,7 +207,7 @@ SAlignmentData RestoreAndShowAlignmentData(MIL_ID MilSystem, MIL_CONST_TEXT_PTR 
 //*****************************************************************************
 // Find transformation matrices using simple bar with holes.
 //*****************************************************************************
-MIL_INT FindTransformationMatrices(MIL_ID MilSystem)
+bool FindTransformationMatrices(MIL_ID MilSystem)
    {
    // Allocate the display for 2D processing.
    auto MilDisplay = MdispAlloc(MilSystem, M_DEFAULT, MIL_TEXT("M_DEFAULT"), M_WINDOWED, M_UNIQUE_ID);
@@ -211,7 +216,7 @@ MIL_INT FindTransformationMatrices(MIL_ID MilSystem)
    const bool NeedNormal = true;
    auto AlignmentData = RestoreAndShowAlignmentData(MilSystem, FILE_POINT_CLOUD, NeedNormal);
    if(!AlignmentData.IsValid)
-      return -1;
+      return false;
 
    // Init the reference hole position.
    MIL_DOUBLE RefCircleXPos = 0.0;
@@ -225,7 +230,7 @@ MIL_INT FindTransformationMatrices(MIL_ID MilSystem)
 
       auto FindBarPlaneResult = FindRotationYAndTranslationZ(MilSystem, MilToAlignPointCloud, AlignmentData.MilGraphicList3d[i], i);
       if (!FindBarPlaneResult.IsValid)
-         return -1;
+         return false;
 
       // Create depth map for primary scan.
       MIL_UNIQUE_BUF_ID MilDepthMap = CreateDepthMap(MilSystem, FindBarPlaneResult.MilTransformedPointCloud);
@@ -249,7 +254,7 @@ MIL_INT FindTransformationMatrices(MIL_ID MilSystem)
          {
          MosPrintf(MIL_TEXT("At least one circle must be found to continue.\n\n"));
          MosPrintf(MIL_TEXT("Press any key to end.\n\n"));
-         return -1;
+         return false;
          }
 
       // Run modelfinder to find segment.
@@ -305,7 +310,7 @@ MIL_INT FindTransformationMatrices(MIL_ID MilSystem)
    // Merge and show the aligned point cloud.
    MergeAndShowAligned(MilSystem, std::vector<MIL_ID>(AlignmentData.MilToAlignPointClouds.begin(), AlignmentData.MilToAlignPointClouds.end()));
 
-   return 0;
+   return true;
    }
 
 //*****************************************************************************
@@ -373,7 +378,7 @@ MIL_UNIQUE_3DDISP_ID Alloc3dDisplayId(MIL_ID MilSystem)
       {
       MosPrintf(MIL_TEXT("\n")
          MIL_TEXT("The current system does not support the 3D display.\n")
-         MIL_TEXT("Press any key to continue.\n"));
+         MIL_TEXT("Press any key to end.\n"));
       MosGetch();
       }
    return MilDisplay3d;
@@ -388,12 +393,14 @@ MIL_UNIQUE_3DDISP_ID Alloc3dDisplayId(MIL_ID MilSystem,
                                       const MIL_STRING& Title)
    {
    auto Mil3dDisp = Alloc3dDisplayId(MilSystem);
-
-   M3ddispControl(Mil3dDisp, M_TITLE, Title);
-   M3ddispControl(Mil3dDisp, M_WINDOW_INITIAL_POSITION_X, PositionX);
-   M3ddispControl(Mil3dDisp, M_WINDOW_INITIAL_POSITION_Y, PositionY);
-   M3ddispControl(Mil3dDisp, M_SIZE_X, SizeX);
-   M3ddispControl(Mil3dDisp, M_SIZE_Y, SizeY);
+   if(Mil3dDisp)
+      {
+      M3ddispControl(Mil3dDisp, M_TITLE, Title);
+      M3ddispControl(Mil3dDisp, M_WINDOW_INITIAL_POSITION_X, PositionX);
+      M3ddispControl(Mil3dDisp, M_WINDOW_INITIAL_POSITION_Y, PositionY);
+      M3ddispControl(Mil3dDisp, M_SIZE_X, SizeX);
+      M3ddispControl(Mil3dDisp, M_SIZE_Y, SizeY);
+      }
 
    return Mil3dDisp;
    }
